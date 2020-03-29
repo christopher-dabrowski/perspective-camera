@@ -10,8 +10,10 @@ pygame.display.set_caption('3D models :D')
 wireframe = Wireframe()
 wireframe.add_nodes(np.array([[20, 20, 20],
                               [100, 20, 20]]))
+wireframe.add_edges([(0, 1)])
 
 print(wireframe.list_nodes())
+print(wireframe.list_edges())
 
 running = True
 while running:
