@@ -42,6 +42,43 @@ class Wireframe:
             a = self.nodes[edge[0]]
             b = self.nodes[edge[1]]
 
+            # result += '{' + ', '.join(map(str, a[:3])) + \
+            #     ', ' + ', '.join(map(str, b[:3])) + '},\n'
             result += f'Edge from {Wireframe.point_to_str(a)} to {Wireframe.point_to_str(b)}\n'
 
         return result
+
+    @staticmethod
+    def load_from_file(file_name: str):
+        i = 0
+        loaded_points = dict()
+        loaded_edges = []
+
+        with open(file_name, 'r') as file:
+            for line in file.readlines():
+                points = [float(p) for p in line.split(', ')]
+                start = tuple(points[:3])
+                end = tuple(points[3:])
+
+                # print(start)
+                # print(end)
+
+                for point in (start, end):
+                    if not point in loaded_points:
+                        # Save point with new index
+                        loaded_points[point] = i
+                        i += 1
+
+                loaded_edges.append((loaded_points[start], loaded_points[end]))
+
+        sorted_points = sorted(loaded_points.items(), key=lambda x: x[1])
+        # print(sorted_points)
+        # print(list(zip(*sorted_points)))
+        sorted_points = list(zip(*sorted_points))[0]
+        # print(sorted_points)
+
+        wireframe = Wireframe()
+        wireframe.add_nodes(np.array(sorted_points))
+        wireframe.add_edges(loaded_edges)
+
+        return wireframe
