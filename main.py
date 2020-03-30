@@ -2,6 +2,7 @@ import pygame
 import numpy as np
 from typing import Tuple
 from wireframe import Wireframe
+import matrices
 
 
 def translate_3d_to_2d(point_3d: np.array, view_width: float, view_heigh: float, focal: float) -> Tuple[float, float]:
@@ -47,6 +48,8 @@ for node in wireframes[0].nodes:
 
     pygame.draw.circle(screen, node_color, center, node_size)
 
+
+print(matrices.translation_matrix(2, 3, -1))
 
 running = True
 while running:
