@@ -56,6 +56,9 @@ for node in wireframes[0].nodes:
 
 # print(matrices.translation_matrix(2, 3, -1))
 
+FOCAL_LIMITS = 20., 500.
+FOCAL_STEP = 2.
+
 TRANSLATION_STEP = 10.
 left_translation = matrices.translation_matrix(TRANSLATION_STEP, 0, 0)
 right_translation = matrices.translation_matrix(-TRANSLATION_STEP, 0, 0)
@@ -70,22 +73,28 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         keys = pygame.key.get_pressed()
+        if keys[pygame.K_MINUS]:
+            if focal-FOCAL_STEP > FOCAL_LIMITS[0]:
+                focal -= FOCAL_STEP
+        if keys[pygame.K_EQUALS]:
+            if focal+FOCAL_STEP < FOCAL_LIMITS[1]:
+                focal += FOCAL_STEP
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             for wireframe in wireframes:
                 wireframe.transform(left_translation)
-        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             for wireframe in wireframes:
                 wireframe.transform(right_translation)
-        elif keys[pygame.K_UP] or keys[pygame.K_w]:
+        if keys[pygame.K_UP] or keys[pygame.K_w]:
             for wireframe in wireframes:
                 wireframe.transform(forwart_translation)
-        elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             for wireframe in wireframes:
                 wireframe.transform(backward_translation)
-        elif keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE]:
             for wireframe in wireframes:
                 wireframe.transform(up_translation)
-        elif keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
+        if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
             for wireframe in wireframes:
                 wireframe.transform(down_translation)
 
