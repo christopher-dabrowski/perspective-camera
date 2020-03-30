@@ -8,7 +8,7 @@ def load_models_from_folder(foler_name: str) -> List:
     """Load all files from given foler as wireframes"""
 
     files = [f for f in listdir(foler_name) if isfile(join(foler_name, f))]
-    return [Wireframe.load_from_file(f) for f in files]
+    return [Wireframe.load_from_file(join(foler_name, f)) for f in files]
 
 
 class Wireframe:
