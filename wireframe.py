@@ -1,5 +1,14 @@
 import numpy as np
 from typing import List, Tuple
+from os import listdir, getcwd
+from os.path import isfile, join
+
+
+def load_models_from_folder(foler_name: str) -> List:
+    """Load all files from given foler as wireframes"""
+
+    files = [f for f in listdir(foler_name) if isfile(join(foler_name, f))]
+    return [Wireframe.load_from_file(f) for f in files]
 
 
 class Wireframe:

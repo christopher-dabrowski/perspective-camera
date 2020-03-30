@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
 from typing import Tuple
-from wireframe import Wireframe
+from wireframe import Wireframe, load_models_from_folder
 import matrices
 
 
@@ -32,9 +32,7 @@ pygame.display.set_caption('3D models :D')
 #                                               for n in range(0, 8, 2)]+[(n, n+2) for n in (0, 1, 4, 5)]
 # wireframe.add_edges(cube_edges)
 
-wireframes = []
-
-wireframes.append(Wireframe.load_from_file('wireframe1.dat'))
+wireframes = load_models_from_folder('models')
 
 print(wireframes[0].list_nodes())
 print(wireframes[0].list_edges())
@@ -53,8 +51,6 @@ for node in wireframes[0].nodes:
 # transformation = matrices.translation_matrix(-200, 0, -300)
 # wireframes[0].transform(transformation)
 
-
-# print(matrices.translation_matrix(2, 3, -1))
 
 FOCAL_LIMITS = 20., 500.
 FOCAL_STEP = 2.
