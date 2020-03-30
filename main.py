@@ -36,7 +36,7 @@ wireframes = load_models_from_folder('models')
 FOCAL_LIMITS = 20., 500.
 FOCAL_STEP = 2.
 TRANSLATION_STEP = 10.
-ROTATION_STEP = np.radians(0.3)
+ROTATION_STEP = np.radians(0.8)
 
 left_translation = matrices.translation_matrix(TRANSLATION_STEP, 0, 0)
 right_translation = matrices.translation_matrix(-TRANSLATION_STEP, 0, 0)
