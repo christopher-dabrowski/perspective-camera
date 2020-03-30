@@ -67,6 +67,14 @@ backward_translation = matrices.translation_matrix(0, +TRANSLATION_STEP, 0)
 up_translation = matrices.translation_matrix(0, 0, -TRANSLATION_STEP)
 down_translation = matrices.translation_matrix(0, 0, +TRANSLATION_STEP)
 
+ROTATION_STEP = np.radians(0.3)
+cunter_clockwise_rotation = matrices.rotation_matrix(ROTATION_STEP, 'z')
+clokcwise_rotation = matrices.rotation_matrix(-ROTATION_STEP, 'z')
+up_rotation = matrices.rotation_matrix(ROTATION_STEP, 'x')
+down_rotation = matrices.rotation_matrix(-ROTATION_STEP, 'x')
+left_rotation = matrices.rotation_matrix(ROTATION_STEP * 2, 'y')
+right_rotation = matrices.rotation_matrix(-ROTATION_STEP * 2, 'y')
+
 running = True
 while running:
     for event in pygame.event.get():
@@ -76,6 +84,7 @@ while running:
         if keys[pygame.K_MINUS]:
             if focal-FOCAL_STEP > FOCAL_LIMITS[0]:
                 focal -= FOCAL_STEP
+
         if keys[pygame.K_EQUALS]:
             if focal+FOCAL_STEP < FOCAL_LIMITS[1]:
                 focal += FOCAL_STEP
@@ -97,6 +106,25 @@ while running:
         if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
             for wireframe in wireframes:
                 wireframe.transform(down_translation)
+
+        if keys[pygame.K_j]:
+            for wireframe in wireframes:
+                wireframe.transform(cunter_clockwise_rotation)
+        if keys[pygame.K_l]:
+            for wireframe in wireframes:
+                wireframe.transform(clokcwise_rotation)
+        if keys[pygame.K_i]:
+            for wireframe in wireframes:
+                wireframe.transform(up_rotation)
+        if keys[pygame.K_k]:
+            for wireframe in wireframes:
+                wireframe.transform(down_rotation)
+        if keys[pygame.K_u]:
+            for wireframe in wireframes:
+                wireframe.transform(left_rotation)
+        if keys[pygame.K_o]:
+            for wireframe in wireframes:
+                wireframe.transform(right_rotation)
 
     screen.fill((0, 0, 0))
     for wireframe in wireframes:
