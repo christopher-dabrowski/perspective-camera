@@ -18,44 +18,26 @@ def is_point_visible(point_3d: np.array, focal: float) -> bool:
     return point_3d[1] > focal
 
 
-print("Hi")
-
 screen_size = (500, 500)
-screen = pygame.display.set_mode(screen_size)
-pygame.display.set_caption('3D models :D')
-
-# wireframe = Wireframe()
-# cube_nodes = [(x, y, z) for x in (20, 200)
-#               for y in (20, 200) for z in (20, 200)]
-# wireframe.add_nodes(np.array(cube_nodes))
-# cube_edges = [(n, n+4) for n in range(0, 4)]+[(n, n+1)
-#                                               for n in range(0, 8, 2)]+[(n, n+2) for n in (0, 1, 4, 5)]
-# wireframe.add_edges(cube_edges)
-
-wireframes = load_models_from_folder('models')
-
-print(wireframes[0].list_nodes())
-print(wireframes[0].list_edges())
-
 focal = 300
 node_color = (255, 255, 255)
 node_size = 3
 edge_color = node_color
 edge_widht = 2
 
-for node in wireframes[0].nodes:
-    print(f'Node {node} is translated to:')
-    center = translate_3d_to_2d(node, *screen_size, focal)
-    print(" "*5 + str(center))
+screen = pygame.display.set_mode(screen_size)
+pygame.display.set_caption('3D models :D')
+
+wireframes = load_models_from_folder('models')
 
 # transformation = matrices.translation_matrix(-200, 0, -300)
 # wireframes[0].transform(transformation)
 
-
 FOCAL_LIMITS = 20., 500.
 FOCAL_STEP = 2.
-
 TRANSLATION_STEP = 10.
+ROTATION_STEP = np.radians(0.3)
+
 left_translation = matrices.translation_matrix(TRANSLATION_STEP, 0, 0)
 right_translation = matrices.translation_matrix(-TRANSLATION_STEP, 0, 0)
 forwart_translation = matrices.translation_matrix(0, -TRANSLATION_STEP, 0)
@@ -63,7 +45,6 @@ backward_translation = matrices.translation_matrix(0, +TRANSLATION_STEP, 0)
 up_translation = matrices.translation_matrix(0, 0, -TRANSLATION_STEP)
 down_translation = matrices.translation_matrix(0, 0, +TRANSLATION_STEP)
 
-ROTATION_STEP = np.radians(0.3)
 cunter_clockwise_rotation = matrices.rotation_matrix(ROTATION_STEP, 'z')
 clokcwise_rotation = matrices.rotation_matrix(-ROTATION_STEP, 'z')
 up_rotation = matrices.rotation_matrix(ROTATION_STEP, 'x')
@@ -122,6 +103,7 @@ while running:
             for wireframe in wireframes:
                 wireframe.transform(right_rotation)
 
+    # Draw
     screen.fill((0, 0, 0))
     for wireframe in wireframes:
         for node in wireframe.nodes:
