@@ -48,8 +48,25 @@ for node in wireframes[0].nodes:
 
     pygame.draw.circle(screen, node_color, center, node_size)
 
+# wireframe = wireframes[0]
+# print(wireframe.nodes)
+# print()
+transformation = matrices.translation_matrix(-200, 0, -300)
+wireframes[0].transform(transformation)
+# print(transformation)
+# print(wireframe.nodes @ transformation)
+# print()
+# print(wireframe.nodes)
 
-print(matrices.translation_matrix(2, 3, -1))
+# for node in wireframes[0].nodes:
+#     print(f'Node {node} is translated to:')
+#     center = translate_3d_to_2d(node, *screen_size, focal)
+#     print(" "*5 + str(center))
+
+#     pygame.draw.circle(screen, node_color, center, node_size)
+
+
+# print(matrices.translation_matrix(2, 3, -1))
 
 running = True
 while running:

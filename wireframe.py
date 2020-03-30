@@ -23,6 +23,10 @@ class Wireframe:
         """Add edges from given of node indexes list"""
         self.edges.extend(edge_list)
 
+    def transform(self, transformation_matrix: np.array) -> None:
+        """Apply given transformation to all nodes"""
+        self.nodes = self.nodes @ transformation_matrix
+
     @staticmethod
     def point_to_str(point: np.array) -> str:
         data = ', '.join(map(str, point[:3]))
