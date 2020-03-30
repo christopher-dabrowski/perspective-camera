@@ -46,33 +46,32 @@ for node in wireframes[0].nodes:
     center = translate_3d_to_2d(node, *screen_size, focal)
     print(" "*5 + str(center))
 
-    pygame.draw.circle(screen, node_color, center, node_size)
-
-# wireframe = wireframes[0]
-# print(wireframe.nodes)
-# print()
-transformation = matrices.translation_matrix(-200, 0, -300)
-wireframes[0].transform(transformation)
-# print(transformation)
-# print(wireframe.nodes @ transformation)
-# print()
-# print(wireframe.nodes)
-
-# for node in wireframes[0].nodes:
-#     print(f'Node {node} is translated to:')
-#     center = translate_3d_to_2d(node, *screen_size, focal)
-#     print(" "*5 + str(center))
-
-#     pygame.draw.circle(screen, node_color, center, node_size)
+# transformation = matrices.translation_matrix(-200, 0, -300)
+# wireframes[0].transform(transformation)
 
 
 # print(matrices.translation_matrix(2, 3, -1))
+
+TRANSLATION_STEP = 10.
+left_translation = matrices.translation_matrix(-TRANSLATION_STEP, 0, 0)
+right_translation = matrices.translation_matrix(TRANSLATION_STEP, 0, 0)
+forwart_translation = matrices.translation_matrix(0, TRANSLATION_STEP, 0)
+backward_translation = matrices.translation_matrix(0, -TRANSLATION_STEP, 0)
+up_translation = matrices.translation_matrix(0, 0, TRANSLATION_STEP)
+down_translation = matrices.translation_matrix(0, 0, -TRANSLATION_STEP)
 
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            for wireframe in wireframes:
+                wireframe.transform(left_translation)
+        elif keys[pygame.K_RIGHT]:
+            for wireframe in wireframes:
+                wireframe.transform(right_translation)
 
     screen.fill((0, 0, 0))
     for wireframe in wireframes:
