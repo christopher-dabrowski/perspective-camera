@@ -14,6 +14,10 @@ def translate_3d_to_2d(point_3d: np.array, view_width: float, view_heigh: float,
     return x, y
 
 
+def is_point_visible(point_3d: np.array, focal: float) -> bool:
+    return point_3d[1] > focal
+
+
 print("Hi")
 
 screen_size = (500, 500)
@@ -53,12 +57,12 @@ for node in wireframes[0].nodes:
 # print(matrices.translation_matrix(2, 3, -1))
 
 TRANSLATION_STEP = 10.
-left_translation = matrices.translation_matrix(-TRANSLATION_STEP, 0, 0)
-right_translation = matrices.translation_matrix(TRANSLATION_STEP, 0, 0)
-forwart_translation = matrices.translation_matrix(0, TRANSLATION_STEP, 0)
-backward_translation = matrices.translation_matrix(0, -TRANSLATION_STEP, 0)
-up_translation = matrices.translation_matrix(0, 0, TRANSLATION_STEP)
-down_translation = matrices.translation_matrix(0, 0, -TRANSLATION_STEP)
+left_translation = matrices.translation_matrix(TRANSLATION_STEP, 0, 0)
+right_translation = matrices.translation_matrix(-TRANSLATION_STEP, 0, 0)
+forwart_translation = matrices.translation_matrix(0, -TRANSLATION_STEP, 0)
+backward_translation = matrices.translation_matrix(0, +TRANSLATION_STEP, 0)
+up_translation = matrices.translation_matrix(0, 0, -TRANSLATION_STEP)
+down_translation = matrices.translation_matrix(0, 0, +TRANSLATION_STEP)
 
 running = True
 while running:
@@ -66,24 +70,37 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             for wireframe in wireframes:
                 wireframe.transform(left_translation)
-        elif keys[pygame.K_RIGHT]:
+        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             for wireframe in wireframes:
                 wireframe.transform(right_translation)
+        elif keys[pygame.K_UP] or keys[pygame.K_w]:
+            for wireframe in wireframes:
+                wireframe.transform(forwart_translation)
+        elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
+            for wireframe in wireframes:
+                wireframe.transform(backward_translation)
+        elif keys[pygame.K_SPACE]:
+            for wireframe in wireframes:
+                wireframe.transform(up_translation)
+        elif keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
+            for wireframe in wireframes:
+                wireframe.transform(down_translation)
 
     screen.fill((0, 0, 0))
     for wireframe in wireframes:
         for node in wireframe.nodes:
-            center = translate_3d_to_2d(node, *screen_size, focal)
-            pygame.draw.circle(screen, node_color, center, node_size)
+            if is_point_visible(node, focal):
+                center = translate_3d_to_2d(node, *screen_size, focal)
+                pygame.draw.circle(screen, node_color, center, node_size)
 
         for edge in wireframe.edges:
-            a = translate_3d_to_2d(
-                wireframe.nodes[edge[0]], *screen_size, focal)
-            b = translate_3d_to_2d(
-                wireframe.nodes[edge[1]], *screen_size, focal)
-            pygame.draw.line(screen, edge_color, a, b, edge_widht)
+            a, b = wireframe.nodes[edge[0]], wireframe.nodes[edge[1]]
+            if is_point_visible(a, focal) and is_point_visible(b, focal):
+                a = translate_3d_to_2d(a, *screen_size, focal)
+                b = translate_3d_to_2d(b, *screen_size, focal)
+                pygame.draw.line(screen, edge_color, a, b, edge_widht)
 
     pygame.display.flip()
