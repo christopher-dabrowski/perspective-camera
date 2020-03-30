@@ -23,8 +23,6 @@ class Wireframe:
 
     def add_nodes(self, nodes: np.array) -> None:
         """Add new points to the bottom of the array"""
-        print(nodes.shape[1])
-        print(np.ones([nodes.shape[0], 1]))
         with_ones = np.hstack([nodes, np.ones([nodes.shape[0], 1])])
         self.nodes = np.vstack([self.nodes, with_ones])
 
@@ -85,10 +83,7 @@ class Wireframe:
                 loaded_edges.append((loaded_points[start], loaded_points[end]))
 
         sorted_points = sorted(loaded_points.items(), key=lambda x: x[1])
-        # print(sorted_points)
-        # print(list(zip(*sorted_points)))
         sorted_points = list(zip(*sorted_points))[0]
-        # print(sorted_points)
 
         wireframe = Wireframe()
         wireframe.add_nodes(np.array(sorted_points))
